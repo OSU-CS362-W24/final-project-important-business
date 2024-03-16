@@ -1,0 +1,15 @@
+name: Build and test
+on: [ pull-request ]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+# steps template: - [keyword]: [action]
+      - uses: actions/checkout@v4 # navigates to the active branch directory
+      - uses: actions/setup-node@v4 # self defining
+        with:
+          node-version: 21
+      - run: npm ci
+      - run: npm run build
+      - run: npm run test:integration
+      - run: npm run test:e2e
