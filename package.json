@@ -7,8 +7,13 @@
     "start": "webpack serve --open"
   },
   "devDependencies": {
+    "@testing-library/dom": "^9.3.4",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/user-event": "^14.5.2",
     "css-loader": "^6.7.4",
+    "cypress": "^13.7.0",
     "html-webpack-plugin": "^5.5.1",
+    "jest": "^29.7.0",
     "style-loader": "^3.3.3",
     "webpack": "^5.83.1",
     "webpack-cli": "^5.1.1",
