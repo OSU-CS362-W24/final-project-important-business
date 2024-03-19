@@ -9,9 +9,8 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-# steps template: - [keyword]: [action]
-      - uses: actions/checkout@v4 # navigates to the active branch directory
-      - uses: actions/setup-node@v4 # self defining
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 21
       - run: npm ci
