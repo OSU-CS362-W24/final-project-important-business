@@ -22,6 +22,6 @@ jobs:
           name: e2e-videos
           path: cypress/videos/
       - if: ${{ inputs.upload-pages-artifact }}
-        - uses: actions/upload-pages-artifact@v1
-          with:
-            path: build/
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: build/
