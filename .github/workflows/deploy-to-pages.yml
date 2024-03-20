@@ -5,8 +5,8 @@ on:
 jobs:
   build-and-test:
     uses: ./.github/workflows/lecture-workflow.yml
-      with:
-        upload-pages-artifact: true
+    with:
+      upload-pages-artifact: true
   deploy-to-pages:
     runs-on: ubuntu-latest
     environment:
