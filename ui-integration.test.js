@@ -8,8 +8,9 @@ require("whatwg-fetch")
 require("@testing-library/jest-dom")
 const domTesting = require("@testing-library/dom")
 const exp = require("constants")
+const { assert } = require("console")
 const userEvent = require("@testing-library/user-event").default
-
+const GenAlert = require("./src/chartBuilder/chartBuilder.js")
 
 function initDomFromFiles(htmlPath, jsPath) {
     	const html = fs.readFileSync(htmlPath, 'utf8')
@@ -73,7 +74,7 @@ test("Assure the clear button removes extra fields and resets needed fields", as
 	const clearBtn = domTesting.getByText(document, "Clear chart data")
 
     const xLab = domTesting.getByLabelText(document, "X label")
-    const yLab = domTesting.getByLabelText(document, "X label")
+    const yLab = domTesting.getByLabelText(document, "Y label")
 
     const chartTitle = domTesting.getByLabelText(document, "Chart title")
     const chartColor = domTesting.getByLabelText(document, "Chart color")
@@ -106,4 +107,62 @@ test("Assure the clear button removes extra fields and resets needed fields", as
     expect(xLab).toBeEmptyDOMElement()
     expect(yLab).toBeEmptyDOMElement()
     
+})
+
+
+test("Assure alert is displayed upon missing labels", async function() {
+	// Arrange: 
+   	initDomFromFiles(__dirname + "/src/line/line.html", __dirname + "/src/line/line.js")
+
+	// Aquire: 
+	const graphBtn = domTesting.getByText(document, "Generate chart")
+    const xLab = domTesting.getByLabelText(document, "X label")
+    const yLab = domTesting.getByLabelText(document, "Y label")
+
+    // Act: 
+   	const user = userEvent.setup()
+    await user.type(xLab, "xtestLabel")
+    await user.type(yLab, "ytestLabel")
+
+    const spy = jest.spyOn(window, "alert")
+    spy.mockImplementation(function () {})
+    await user.click(graphBtn)
+    
+
+   	// Assert: 
+    expect(domTesting.getByLabelText(document, "X")).toBeEmptyDOMElement()
+    expect(domTesting.getByLabelText(document, "Y")).toBeEmptyDOMElement()
+    expect(spy).toHaveBeenCalled()
+
+    spy.mockRestore()
+})
+
+
+
+
+test("Assure alert is displayed upon missing labels", async function() {
+	// Arrange: 
+   	initDomFromFiles(__dirname + "/src/line/line.html", __dirname + "/src/line/line.js")
+
+	// Aquire: 
+	const graphBtn = domTesting.getByText(document, "Generate chart")
+    const xInput = domTesting.getByText(document, "X")
+    const yInput = domTesting.getByText(document, "Y")
+
+    // Act: 
+   	const user = userEvent.setup() 
+    await user.type(xInput, "2")
+    await user.type(yInput, "5")
+    
+    const spy = jest.spyOn(window, "alert")
+    spy.mockImplementation(function () {})
+    await user.click(graphBtn)
+    
+
+   	// Assert: 
+    expect(domTesting.getByLabelText(document, "X label")).toBeEmptyDOMElement()
+    expect(domTesting.getByLabelText(document, "Y label")).toBeEmptyDOMElement()
+    expect(spy).toHaveBeenCalled()
+
+    //spy.mockRestore()
 })
