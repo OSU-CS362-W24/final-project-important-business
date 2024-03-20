@@ -2,10 +2,8 @@
  * @jest-environment jsdom
  */
 const fs = require("fs")
-const domTesting = require('@testing-library/dom')
-const jestDom = require('@testing-library/jest-dom')
+require('@testing-library/jest-dom')
 const chartStorage = require("./src/lib/chartStorage.js")
-const userEvent = require("@testing-library/user-event").default
 
 function initDomFromFiles(htmlPath, jsPath) {
     const html = fs.readFileSync(htmlPath, 'utf8')
@@ -18,38 +16,30 @@ function initDomFromFiles(htmlPath, jsPath) {
 }
 
 test('Testing base case saveChart()', async function() {
-    initDomFromFiles(`${__dirname}/src/line/line.html`, `${__dirname}/src/lib/chartStorage.js`)
-
-    const plus = domTesting.getByText(document, "+")
-    const title_input = domTesting.getByLabelText(document, "Chart title")
-    const x_input = domTesting.getByLabelText(document, "X")
-    const y_input = domTesting.getByLabelText(document, "Y")
-    const gen_button = domTesting.getByText(document, "Generate chart")
-    const save_button = domTesting.getByText(document, "Save chart")
-    
-    const user = userEvent.setup()
-    await user.click(plus)
-    await user.type(title_input, "test title")
-    await user.type(x_input, "1")
-    await user.type(y_input, "1")
-    await user.click(gen_button)
-    await user.click(save_button)
-
-    expect(window.localStorage.getItem("savedCharts")).not.toBe(null)
+    const chart = {"type":"line","data":[{"x":"1","y":"1"}],"xLabel":"xtest","yLabel":"ytest","title":"test title","color":"#ff4500"}
+    chartStorage.saveChart(chart)
+    expect(window.localStorage.getItem("savedCharts" || "[0]")).toStrictEqual("[{\"type\":\"line\",\"data\":[{\"x\":\"1\",\"y\":\"1\"}],\"xLabel\":\"xtest\",\"yLabel\":\"ytest\",\"title\":\"test title\",\"color\":\"#ff4500\"}]")
 })
 
 test('Testing base case loadAllSavedCharts()', () => {
-
+    const charts = [{"type":"line","data":[{"x":"1","y":"1"}],"xLabel":"test","yLabel":"test","title":"test","color":"#ff4500"},{"type":"line","data":[{"x":"1","y":"1"}],"xLabel":"xtest","yLabel":"ytest","title":"test title","color":"#ff4500"}]
+    const chart = {"type":"line","data":[{"x":"1","y":"2"}],"xLabel":"xtest","yLabel":"ytest","title":"test title","color":"#ff4500"}
+    chartStorage.saveChart(chart)
+    const loadedCharts = chartStorage.loadAllSavedCharts()
+    expect(loadedCharts).toStrictEqual([{"color": "#ff4500", "data": [{"x": "1", "y": "1"}], "title": "test title", "type": "line", "xLabel": "xtest", "yLabel": "ytest"}, {"color": "#ff4500", "data": [{"x": "1", "y": "2"}], "title": "test title", "type": "line", "xLabel": "xtest", "yLabel": "ytest"}])
 })
 
 test('Testing base case loadSavedChart()', () => {
-
+    const chart = {"type":"line","data":[{"x":"1","y":"1"}],"xLabel":"xtest","yLabel":"ytest","title":"test title","color":"#ff4500"}
+    const loadedChart = chartStorage.loadSavedChart(0)
+    expect(loadedChart).toStrictEqual({"type":"line","data":[{"x":"1","y":"1"}],"xLabel":"xtest","yLabel":"ytest","title":"test title","color":"#ff4500"})
 })
 
 test('Testing base case updateCurrentChartData()', () => {
-
+    const upChart = {"type":"line","data":[{"x":"1","y":"1"},{"x":"2","y":"2"}],"xLabel":"xtest","yLabel":"ytest","title":"test title","color":"#ff4500"}
+    chartStorage.updateCurrentChartData(upChart)
+    expect(window.localStorage.getItem("currentChartData" || "[0]")).toStrictEqual("{\"type\":\"line\",\"data\":[{\"x\":\"1\",\"y\":\"1\"},{\"x\":\"2\",\"y\":\"2\"}],\"xLabel\":\"xtest\",\"yLabel\":\"ytest\",\"title\":\"test title\",\"color\":\"#ff4500\"}")
 })
 
 test('Testing base case loadCurrentChartData()', () => {
-
 })

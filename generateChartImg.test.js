@@ -13,5 +13,5 @@ test('Testing base case of generateChartImg()', () => {
     var yLabel = "speed"
     var title = "velocity"
     var color = "blue"
-    expect(generateChartImg(type, data, xLabel, yLabel, title, color)).toContain("https://")
+    expect(generateChartImg.generateChartImg(type, data, xLabel, yLabel, title, color)).toContain("https://")
 })
