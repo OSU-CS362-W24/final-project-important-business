@@ -77,15 +77,3 @@ test('Testing with all 0 values', () => {
     ]
     expect(sortPoints(testArray)).toStrictEqual(sortedArray)
 })
-
-test('', () => {
-
-})
-
-test('', () => {
-
-})
-
-test('', () => {
-
-})
