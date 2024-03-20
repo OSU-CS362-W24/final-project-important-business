@@ -1,6 +1,6 @@
 name: Build and test
 on:
-  workflow-call:
+  workflow_call:
     inputs:
       upload-pages-artifact:
         type: boolean
@@ -23,5 +23,5 @@ jobs:
           path: cypress/videos/
       - if: ${{ inputs.upload-pages-artifact }}
         uses: actions/upload-pages-artifact@v1
-          with:
-            path: build/
+        with:
+          path: build/
