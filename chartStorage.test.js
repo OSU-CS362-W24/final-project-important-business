@@ -5,16 +5,6 @@ const fs = require("fs")
 require('@testing-library/jest-dom')
 const chartStorage = require("./src/lib/chartStorage.js")
 
-function initDomFromFiles(htmlPath, jsPath) {
-    const html = fs.readFileSync(htmlPath, 'utf8')
-    document.open()
-    document.write(html)
-    document.close()
-    jest.isolateModules(function() {
-        require(jsPath)
-    })
-}
-
 test('Testing base case saveChart()', async function() {
     const chart = {"type":"line","data":[{"x":"1","y":"1"}],"xLabel":"xtest","yLabel":"ytest","title":"test title","color":"#ff4500"}
     chartStorage.saveChart(chart)
@@ -42,4 +32,8 @@ test('Testing base case updateCurrentChartData()', () => {
 })
 
 test('Testing base case loadCurrentChartData()', () => {
+    const curChart = {"type":"line","data":[{"x":"1","y":"1"},{"x":"2","y":"2"}],"xLabel":"xtest","yLabel":"ytest","title":"test title","color":"#ff4500"}
+    chartStorage.updateCurrentChartData(curChart)
+    const curChartData = chartStorage.loadCurrentChartData()
+    expect(curChartData).toStrictEqual(curChart)
 })
