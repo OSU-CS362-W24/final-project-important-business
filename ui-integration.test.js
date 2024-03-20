@@ -23,6 +23,12 @@ function initDomFromFiles(htmlPath, jsPath) {
 	})
 }
 
+beforeEach(function() {
+    window.localStorage.clear()
+    jest.resetModules()
+    jest.restoreAllMocks()
+})
+
 test("Assure the add values button adds an x and y input field with label", async function() {
 	// Arrange: 
    	initDomFromFiles(__dirname + "/src/line/line.html", __dirname + "/src/line/line.js")
@@ -137,9 +143,6 @@ test("Assure alert is displayed upon missing labels", async function() {
     spy.mockRestore()
 })
 
-
-
-
 test("Assure alert is displayed upon missing labels", async function() {
 	// Arrange: 
    	initDomFromFiles(__dirname + "/src/line/line.html", __dirname + "/src/line/line.js")
@@ -164,5 +167,43 @@ test("Assure alert is displayed upon missing labels", async function() {
     expect(domTesting.getByLabelText(document, "Y label")).toBeEmptyDOMElement()
     expect(spy).toHaveBeenCalled()
 
-    //spy.mockRestore()
+    spy.mockRestore()
 })
+
+/*
+test("Assure chart data is sent to chart generation function", async function() {
+	// Arrange: 
+   	initDomFromFiles(__dirname + "/src/line/line.html", __dirname + "/src/line/line.js")
+
+    jest.mock("./src/lib/generateChartImg.js")
+    const generateChartImgStub = require("./src/lib/generateChartImg")
+    generateChartImgStub.mockImplementation(function() {
+        return "http://placekitten.com/480/480"
+    })
+
+    // Aquire: 
+    const graphBtn = domTesting.getByText(document, "Generate chart")
+
+    const xLab = domTesting.getByLabelText(document, "X label")
+    const yLab = domTesting.getByLabelText(document, "Y label")
+    const chartTitle = domTesting.getByLabelText(document, "Chart title")
+    const chartColor = domTesting.getByLabelText(document, "Chart color")
+    const xInput = domTesting.getByText(document, "X")
+    const yInput = domTesting.getByText(document, "Y")
+   
+    // Act: 
+    const user = userEvent.setup()
+    await user.type(chartTitle, "testChartLabel")
+    await user.type(chartColor, "#e66465")
+    await user.type(xLab, "xtestLabel")
+    await user.type(yLab, "ytestLabel")
+    await user.type(xInput, "2")
+    await user.type(yInput, "3")
+    
+   	await user.click(graphBtn) 
+
+   	// Assert: 
+    expect(generateChartImgStub).toHaveBeenCalledTimes(1)
+
+    generateChartImgStub.mockRestore()
+})*/
