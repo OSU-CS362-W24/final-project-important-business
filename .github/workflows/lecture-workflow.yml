@@ -5,6 +5,7 @@ on:
       upload-pages-artifact:
         type: boolean
         required: false
+permissions: write-all
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
