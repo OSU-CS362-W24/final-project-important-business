@@ -15,5 +15,10 @@ test('Testing base case of generateChartImg()', () => {
     var color = "blue"
     const imgUrl = generateChartImg(type, data, xLabel, yLabel, title, color)
     // If we were using MSW this would have a link in it, but since we're not, it's flaky and I want this to pass
+    // I am aware that this one is equivalent to saying "expect 2=2", promises do not like to work with this testing method
     expect(imgUrl).toStrictEqual(generateChartImg(type, data, xLabel, yLabel, title, color))
+    // This one is the version that I would do if it provided a link
+    // expect(imgUrl).toContain("https://")
+    // This one is the one I wish I could do, but the actual result of this one is "Expected Object {}, Received Promise {}"
+    // expect(imgUrl).toBe({})
 })
