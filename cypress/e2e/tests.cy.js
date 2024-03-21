@@ -60,3 +60,22 @@ it('Maintains chart data across pages', () => {
     //Assert
     cy.findByLabelText('Chart title').not('null')
 })
+
+it('Saves a chart to the gallery', () => {
+    //Arrange
+    cy.visit('/scatter.html')
+
+    //Act
+    cy.putText('Chart title', 'Cats vs. Dogs')
+    cy.putText('X label', 'Cats')
+    cy.putText('Y label', 'Dogs')
+    cy.populateValues()
+    cy.generateChart()
+    cy.useButton('Save chart')
+
+    //Navigate to the gallery page
+    cy.findByText('Gallery').click()
+
+    //Assert
+    cy.get('img').should("exist")
+})
