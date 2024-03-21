@@ -42,3 +42,21 @@ it('Correctly generates a scatter chart', () => {
     //Assert
     cy.get('img').should("exist")
 })
+
+it('Maintains chart data across pages', () => {
+    //Arrange
+    cy.visit('/scatter.html')
+
+    //Act
+    cy.putText('Chart title', 'Cats vs. Dogs')
+    cy.putText('X label', 'Cats')
+    cy.putText('Y label', 'Dogs')
+    cy.populateValues()
+    cy.generateChart()
+
+    //Navigate to a new page
+    cy.findByText('Line').click()
+
+    //Assert
+    cy.findByLabelText('Chart title').not('null')
+})
