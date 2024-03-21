@@ -79,3 +79,25 @@ it('Saves a chart to the gallery', () => {
     //Assert
     cy.get('img').should("exist")
 })
+
+it('Reopens a saved chart', () => {
+    //Arrange
+    cy.visit('/scatter.html')
+
+    //Act
+    cy.putText('Chart title', 'Cats vs. Dogs')
+    cy.putText('X label', 'Cats')
+    cy.putText('Y label', 'Dogs')
+    cy.populateValues()
+    cy.generateChart()
+    cy.useButton('Save chart')
+
+    //Navigate to the gallery page
+    cy.findByText('Gallery').click()
+    cy.get('img').click()
+
+    //Assert
+    cy.get('img').should("exist")
+    cy.findByLabelText('Chart title').not('null')
+    cy.findByText('Scatter Plot Builder').should('exist')
+})
